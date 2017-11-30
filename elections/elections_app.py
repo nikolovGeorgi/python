@@ -1,6 +1,4 @@
 # Georgi Nikolov
-# 11082966
-# CMPT 141 03
 
 # Module Imports:
 import sys
