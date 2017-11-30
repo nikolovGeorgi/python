@@ -31,14 +31,22 @@ battle = Battle()
 battle.set_field(f1)
 battle.set_enemy(wights)
 battle.set_archers(archers)
+# battle.run()  ## double setting static defence effects from battle and printer <-fix
 b = battle.data()
 
 
 # Printer initialization
 from printer import Printer
-printer = Printer()
-printer.print_json(b)
+printer = Printer(battle.data())
+printer.run()
+# printer.print_json()
+# printer.print_obj(b)
+# printer.print_total_cell_defences()
+# printer.print_total_static_defences_effect()
 
-
+battle.run()
+# print(b)
+# print(b['enemy']['grid'])
+# print(b['field']['grid'])
 
 
