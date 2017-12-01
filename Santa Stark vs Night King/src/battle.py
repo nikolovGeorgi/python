@@ -1,35 +1,56 @@
+import copy
 class Battle:
-    def __init__(self):
-        self.__data = { 'turns': {} }
-
-    def __init_game_start__(self):
-        pass
+    def __init__(self, data):
+        self.__data = {}
+        self._t = {}
+        self._enemies = copy.deepcopy(data['enemies']['grid'])
+        self._volleys = copy.deepcopy(data['archers']['temp'])
+        self._grid = self._convert_grid(copy.deepcopy(data['field']['grid']))
 
     def run(self):
-        temp_obj = {}
-        for turn, row in enumerate(self.__data['field']['grid']):
-            temp_arr = []
-            self.__update_enemies(row, self.__data['enemy']['grid'])
-            temp_arr.extend(self.__data['enemy']['grid'])
-            temp_obj[turn] = temp_arr
+        self.t_init_outcome()
 
-        self.__set_turns_data__(temp_obj)
-        print(self.__data)
+    def _convert_grid(self, grid):
+        out = {}
+        for c, k in enumerate(grid):
+            out[c] = k
+        return out
 
-    def __update_enemies(self, row, enemies):
-        self.__data['enemy']['grid'][:] = [a - b for a, b in zip(enemies, row)]
+    def t_init_outcome(self):
+        survivors = 0
+        for turn, row in self._grid.items():
+            self.t_update_outcome(row, self._volleys[turn], turn)
+            if turn == max(self._grid.keys()):
+                print()
+                print('Final')
+                print(self._enemies)
 
-    def __set_turns_data__(self, temp_data):
-        self.__data['turns'].update(temp_data)
+                survivors = sum([k for k in self._enemies])
+                print(survivors)
 
-    def set_field(self, field):
-        self.__data['field'] = field
+    def t_update_outcome(self, row, volley, turn):
+        out = []
+        for index, cell in enumerate(row):
+            remains = self._enemies[index] - cell
+            if volley[index] == 0:
+                out.append(remains)
+            else:
+                out.append(remains - (remains * volley[index]/100))
 
-    def set_archers(self, archers):
-        self.__data['archers'] = archers.data()
+        self.t_qq(out, turn)
 
-    def set_enemy(self, enemy):
-        self.__data['enemy'] = enemy.data()
+    def t_qq(self, grid, turn):
+        self._enemies = grid
+        self._init_data(grid, turn)
+
+    def _init_data(self, lst, turn):
+        q = {}
+        q[turn] = lst
+        self._t.update(q)
+
+    def _set_battle_records(self, data):
+        self.__data['battle'] = data
 
     def data(self):
-        return self.__data
+        self.run()
+        # return self.__data
