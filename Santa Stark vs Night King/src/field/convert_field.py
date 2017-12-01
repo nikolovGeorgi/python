@@ -16,6 +16,10 @@ class Field:
                 self.grid.append(self.line_to_int(line.rstrip().split(',')))
             self.file_values.append(self.line_to_int(line.rstrip().split(',')))
 
+    '''
+        < handle grid rotation here >
+    '''
+
     @staticmethod
     def line_to_int(line):
         tmp = []
@@ -31,3 +35,4 @@ class Field:
             'variables': self.file_values[0],
             'grid': self.grid
         }
+
