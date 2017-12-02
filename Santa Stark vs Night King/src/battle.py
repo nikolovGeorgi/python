@@ -2,33 +2,29 @@ import copy
 class Battle:
     def __init__(self, data):
         self.__data = {}
-        self._t = {}
+        self._temp = { 'turns': {}, 'survivors': 0 }
         self._enemies = copy.deepcopy(data['enemies']['grid'])
-        self._volleys = copy.deepcopy(data['archers']['temp'])
+        self._volleys = copy.deepcopy(data['archers']['volleys'])
         self._grid = self._convert_grid(copy.deepcopy(data['field']['grid']))
 
-    def run(self):
-        self.t_init_outcome()
+    def __run(self):
+        self._init_outcome()
+        self._set_battle_records(self._temp)
 
     def _convert_grid(self, grid):
         out = {}
-        for c, k in enumerate(grid):
-            out[c] = k
+        for index, cell in enumerate(grid): out[index] = cell
         return out
 
-    def t_init_outcome(self):
+    def _init_outcome(self):
         survivors = 0
         for turn, row in self._grid.items():
-            self.t_update_outcome(row, self._volleys[turn], turn)
+            self._update_outcome(row, self._volleys[turn], turn)
             if turn == max(self._grid.keys()):
-                print()
-                print('Final')
-                print(self._enemies)
-
                 survivors = sum([k for k in self._enemies])
-                print(survivors)
+                self._temp['survivors'] = survivors
 
-    def t_update_outcome(self, row, volley, turn):
+    def _update_outcome(self, row, volley, turn):
         out = []
         for index, cell in enumerate(row):
             remains = self._enemies[index] - cell
@@ -44,13 +40,13 @@ class Battle:
         self._init_data(grid, turn)
 
     def _init_data(self, lst, turn):
-        q = {}
-        q[turn] = lst
-        self._t.update(q)
+        res = {}
+        res[turn] = lst
+        self._temp['turns'].update(res)
 
     def _set_battle_records(self, data):
         self.__data['battle'] = data
 
     def data(self):
-        self.run()
-        # return self.__data
+        self.__run()
+        return self.__data

@@ -11,21 +11,17 @@ class Field:
         f.close()
 
     def get_line_values(self, lines):
-        for c, line in enumerate(lines):
-            if c != 0:
-                self.grid.append(self.line_to_int(line.rstrip().split(',')))
-            self.file_values.append(self.line_to_int(line.rstrip().split(',')))
-
-    '''
-        < handle grid rotation here >
-    '''
+        for index, line in enumerate(lines):
+            if index != 0:
+                self.grid.append(self.line_to_int(self.rs_line(line)))
+            self.file_values.append(self.line_to_int(self.rs_line(line)))
 
     @staticmethod
     def line_to_int(line):
-        tmp = []
-        for k in line:
-            tmp.append(int(k))
-        return tmp
+        return [int(k) for k in line]
+
+    def rs_line(self, line):
+        return line.rstrip().split(',')
 
     def data(self):
         self.read_file()
@@ -35,4 +31,3 @@ class Field:
             'variables': self.file_values[0],
             'grid': self.grid
         }
-

@@ -50,4 +50,4 @@ class Archer:
 
     def __set_archers_dmg_distribution(self, temp_data):
         self.__data['volleys'] = temp_data
-        self.__data['temp'] = {0:[10, 5, 15], 1:[20, 15, 5], 2:[5, 20, 20]}
+        self.__data['temp'] = {0:[10, 5, 15], 1:[20, 15, 5], 2:[0, 20, 20]}

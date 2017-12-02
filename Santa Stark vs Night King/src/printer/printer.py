@@ -32,5 +32,19 @@ class Printer:
     def print_total_static_defences_effect(self):
         print(self.data['printer']['static defences effect'])
 
-
-
+    def print_form(self):
+        for k, v in self.data.items():
+            print('--------------------------------------------------')
+            print('--------------------------------------------------')
+            print(k)
+            for i, j in v.items():
+                print(i)
+                if (isinstance(j, dict)):
+                    for o, p in j.items():
+                        print('\t', o, p)
+                elif (isinstance(j, list)):
+                    for o in j:
+                        print(o)
+                else:
+                    st2 = '\t' + str(j)
+                    print(st2.expandtabs(5))
