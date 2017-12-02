@@ -16,7 +16,6 @@ class Data:
 
     def data(self):
         self.__run()
-        # print(self.__data)
         return self.__data
 
     def __run(self):

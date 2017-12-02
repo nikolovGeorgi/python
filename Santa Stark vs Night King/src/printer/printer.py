@@ -35,8 +35,9 @@ class Printer:
     def print_form(self):
         for k, v in self.data.items():
             print('--------------------------------------------------')
+            print('---------------------',k,'--------------------------')
             print('--------------------------------------------------')
-            print(k)
+            # print(k)
             for i, j in v.items():
                 print(i)
                 if (isinstance(j, dict)):
