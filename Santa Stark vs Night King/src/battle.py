@@ -1,4 +1,5 @@
 import copy
+
 class Battle:
     def __init__(self, data):
         self.__data = {}
@@ -16,13 +17,13 @@ class Battle:
 
     # Once simulation has started -> initialize outcome and create records
     def __run(self):
-        self.t_init_outcome()
+        self._init_outcome()
         self._set_battle_records(self._temp)
 
-    def t_init_outcome(self):
+    def _init_outcome(self):
         survivors = 0
         for turn, row in self._grid.items():
-            self.t_update_outcome(row, self._volleys[turn], turn)
+            self._update_outcome(row, self._volleys[turn], turn)
 
             if turn == max(self._grid.keys()):
                 survivors = sum([k for k in self._enemies])
@@ -31,7 +32,7 @@ class Battle:
         if survivors < self._success_rate: self._temp['success'] = True
         else: self._temp['success'] = False
 
-    def t_update_outcome(self, row, volley, turn):
+    def _update_outcome(self, row, volley, turn):
         new_grid = []
         for index, cell in enumerate(row):
             remains = self._enemies[index] - cell
@@ -41,7 +42,7 @@ class Battle:
 
             # else archers shoot a volley of flaming arrows
             else:
-                # if volley damage == 0% then remaining wigths advance undamaged by the archers
+                # if volley damage == 0% then remaining wights advance undamaged by the archers
 
                 if volley[index] == 0: new_grid.append(remains)
 
@@ -52,7 +53,7 @@ class Battle:
                     # if the volley kills all remaining enemies then return 0
                     if remains_of_all_damage_applied <= 0: new_grid.append(0)
 
-                    # else return the final remains of wigths
+                    # else return the final remains of wights
                     else: new_grid.append(remains_of_all_damage_applied)
         self._update_grid(new_grid, turn)
 
