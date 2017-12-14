@@ -1,44 +1,37 @@
-# Field initialization
+import numpy as np
 from field.convert_field import Field
-from field.construct_json import ConstructJSON
-
-# Units initialization
-from units.archers import Archer
-from units.wights import Wights
-
-from battle import Battle
-# battle = Battle(data).data()
 
 class Data:
+    """
+        Data class:
+            Receives text file with field information.
+            Imports Numerical Python library & Field Class to process the given information.
+            Only knows of the file name given to it. Reads it and converts the information to __grid or field values, which then get returned as a list.
+            Private methods should only be used by Data class.
+    """
+
     def __init__(self, field):
-        self.__data = {}
-        self.field = field
-        self._p = 20
+        ''' Private method. Data constructor. '''
+        self.__field = field # Assigns passed in file to a private local variable for access within its scope.
+        self.__data = self.__init_field() # Method call to initialize field and assigns its results to a local private variable
 
-    def _set_p(self, archers):
-        archers._set_p(self._p)
+    def get_grid(self):
+        ''' Public method. returns final grid information. '''
+        return self.__set_grid() # Method call
 
-    def _set_probability(self, *args):
-        for i in args:
-            if i == None: self._p = 20
-            else: self._p = i
+    def get_variables(self):
+        ''' Public method. returns final field variables (N, W, k) information. '''
+        return self.__set_variables() # Method call
 
-    def data(self):
-        self.__run()
-        return self.__data
+    # Numericalpy arrays consume less memory and provide availability to process full range operations without iterating each value.
+    def __set_grid(self):
+        ''' Private method. Accesses converted data from Field class and converts it to numerical python array of type float. '''
+        return np.array(self.__data[0], dtype=float)
 
-    def __run(self):
-        # self.__data['location'] = self.field
-        data = self.__data['field'] = self.__init_field()
-        self.__data['enemies'] = Wights(data['N'], data['W']).data()
-
-        self.archers(data)
-        self.__data.update(Battle(self.__data).data())
-
-    def archers(self, data):
-        archers = Archer(data['grid'])
-        self._set_p(archers)
-        self.__data['archers'] = archers.data()
+    def __set_variables(self):
+        ''' Private method. Accesses converted data from Field class and converts it to numerical python array of type float. '''
+        return np.array(self.__data[1][0], dtype=float)
 
     def __init_field(self):
-        return ConstructJSON(Field(self.field), {}).get_data()
+        ''' Private method to initialize the field data. As result it returns List; index=0 == Grid data && index=1 == Field Variables'''
+        return Field(self.__field).data()
