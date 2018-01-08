@@ -1,7 +1,7 @@
 # Library for timing code execution.
 # Although "It avoids a number of common traps for measuring execution times.", it is still highly influenced by machine and system capabilities.
 #
-# Uncomment line 5 and last line prior to running to get processing time value.
+# Uncomment line 9 and last line prior to running to get processing time value.
 import timeit
 # print(timeit.timeit("""
 
@@ -29,17 +29,6 @@ variables = data.get_variables()    ## Acess public Data class method to grab fi
 N = int(variables[0])   # Grid size.
 W = variables[1]    # Amount of Wights. (ENEMIES!!!)
 _k = variables[2]   # More than this amount of survivos is simply allowed!
-
-def check_field_variables(N, W, _k):
-    ''' If any of the field variables are negative values, reset them to zero. '''
-    if N < 0:
-        N = 0
-    elif W < 0:
-        W = 0
-    elif _k < 0:
-        _k = 0
-
-check_field_variables(N, W, _k)
 
 archers_range = 30  # Archer's attack range.
 enemies = [W / N] * len(grid)   # Convert enemies to fit grid.
