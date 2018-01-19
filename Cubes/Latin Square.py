@@ -1,6 +1,4 @@
-## Georgi Nikolov
-## 11082966
-
+## Check if a square is Latin. Latin Square is a square in which the values in every row and column appear only once
 def get_grid_size():
     '''
     :method: Receives user input for the size of the square. If

@@ -1,5 +1,4 @@
-## Georgi Nikolov
-## 11082966
+## Check if a 3x3 square is Magic Square. Middle value of a magic square is 5, and corners are even integers.
 
 class Input:
     """

@@ -1,6 +1,4 @@
-## Georgi Nikolov
-## 11082966
-
+## Draw Histogram - Asterix for every repeated value in a sequence
 def get_data(n):
     '''
     :param n: referes to the size of list of integers the user needs to input.
