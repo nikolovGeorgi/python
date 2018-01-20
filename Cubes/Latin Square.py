@@ -7,8 +7,8 @@ def get_grid_size():
     '''
     while True:
         try:
-            grid = int(input("Please enter size of the square: ")) # try to convert the value to integer, if it can't be - raise value error
-            if grid <= 0: raise ValueError # if value is negative raise an error
+            grid_size = int(input("Please enter size of the square: ")) # try to convert the value to integer, if it can't be - raise value error
+            if grid_size <= 0: raise ValueError # if value is negative raise an error
         except ValueError:
             print("Invalid input. Please Enter a positive integer!")
             print()
@@ -16,7 +16,7 @@ def get_grid_size():
         else:
             print("Thank you!")
             print()
-            return grid # if input value is valid - return it (return breaks the truthy state of the loop)
+            return grid_size # if input value is valid - return it (return breaks the truthy state of the loop)
 
 def get_rows_data(row, grid_size):
     '''
@@ -40,6 +40,14 @@ def get_rows_data(row, grid_size):
         else:
             return data
 
+def data_init(grid_size):
+    '''
+    :method: Asks the user to input integer values for each row in the square.
+    :param grid_size: Holds the size of the square.
+    :return: List of lists, each of which holds integers per row
+    '''
+    return [get_rows_data(row, grid_size) for row in range(1, grid_size + 1)]
+
 def reformat_input(string_data):
     '''
     :method: Receives a list of values, separated by space, as a string. Splits and converts to integer each value.
@@ -54,53 +62,49 @@ def check_duplicates(lst):
     :param lst: list of integer values ( current row of the square )
     :return: False if the list contains duplicates, else returns the original list.
     '''
+    # Faster to keep it split, than in list comprehension -> allows to terminate sooner than later, if duplicate found.
     for k in lst:
         if lst.count(k) > 1: return False
     return lst
 
-grid = get_grid_size() # variable name to reference the size of the square
-row = 1 # variable used to iterate over the rows of the square
-lst = [] # variable used to store each row of data for the square.
-
-while row < grid + 1:   # create the square rows
-    lst.append(check_duplicates(get_rows_data(row, grid))) # if there's duplicates the appended value is simply False.
-    row += 1
-
-def check_columns(lst, grid):
+def check_columns(grid, grid_size):
     '''
-    :method: Columns can never be duplicate, because that would mean we have duplicate values in the rows -> previously checked for. We can only ever have duplicated values in the columns.
-    :param lst: column list of values representing the integers stored in it.
-    :param grid: size of the column
+    :method: For columns to be duplicate as a whole, they would create duplicate values in the rows, which is previously checked. Thus this method checks for duplicated values in the columns only.
+    :param grid: column list of values representing the integers stored in it.
+    :param grid_size: size of the column
     :return if there's no duplicates return True, else False
     '''
-    for k in range(grid):
-        if not check_duplicates([row[k] for row in lst]): return False
+    for k in range(grid_size):
+        if not check_duplicates([row[k] for row in grid]): return False
     return True
 
-def check_rows(lst):
+def check_rows(grid_data):
     '''
     :method: receives a list of lists of integers, representing the rows. First checks
         if there's duplicated rows, then checks for duplicated values in each row.
     :param lst: list of lists of integers in the rows of the square.
     :return: True if no duplicates are found, or else - False
     '''
-    if not check_duplicates(lst): return False ## Check for duplicate rows
-    if [k for k in lst if not k]: return False ## Check for duplicate values in a row
+    # Faster to keep it split, than in list comprehension -> allows to terminate sooner than later, if duplicate found.
+    for row in grid_data:
+        if not check_duplicates(row): return False ## Check for duplicate values in a row
     return True
 
-def check_latin(lst, grid):
+def check_latin():
     '''
     :method: receives a list of lists - the inputed row positive integers, and the size of the square
     :param lst: list of lists of inputed row positive integers
     :param grid: size of the square as a positive integer value
     :return: 'no' if the square is not Latin, and 'yes' if it is.
     '''
+    grid_size = get_grid_size() # variable name to reference the size of the square
+    grid_data = data_init(grid_size) # list to hold all integers in the square, by rows
     try:
-        if not check_rows(lst): raise ValueError
-        if not check_columns(lst, grid): raise ValueError
+        if not check_rows(grid_data): raise ValueError
+        if not check_columns(grid_data, grid_size): raise ValueError
     except ValueError:
         print('no')
     else:
         print('yes')
 
-check_latin(lst, grid)
+check_latin()
