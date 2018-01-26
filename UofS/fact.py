@@ -8,6 +8,7 @@ def factorial(n):
         a non-negative integer
     '''
     prod = 1
-    for i in range (1, n):
-        prod = prod * i
+    while n >= 1:
+        prod = prod * n
+        n = n - 1
     return prod
