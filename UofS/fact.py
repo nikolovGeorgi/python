@@ -7,4 +7,7 @@ def factorial(n):
     Return:
         a non-negative integer
     '''
-    pass
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
