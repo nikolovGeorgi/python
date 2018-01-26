@@ -7,7 +7,7 @@ def factorial(n):
     Return:
         a non-negative integer
     '''
-    if n == 0:
-        return 1
-    else:
-        return n * factorial(n-1)
+    prod = 1
+    for i in range (1, n):
+        prod = prod * i
+    return prod
